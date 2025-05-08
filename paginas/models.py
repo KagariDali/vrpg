@@ -1,5 +1,6 @@
 from django.db import models
 
+
 # Cria suas classes
 class Campus(models.Model): 
     # Definir os atributos
@@ -16,4 +17,3 @@ class TipoSolivitacao(models.Model):
     prazo_externo_dias = models.PositiveSmallIntegerField(defalt=0)
     prazo_interno = models.CharField(max_length=250)
     prazo_interno_dias = models.PositiveSmallIntegerField(default=0)
-    concluido = models.BooleanField(default = false )
