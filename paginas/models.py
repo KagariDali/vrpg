@@ -1,19 +1,22 @@
 from django.db import models
 
-
-# Cria suas classes
-class Campus(models.Model): 
-    # Definir os atributos
-    nome = models.CharField(max_length=100)
-
-class Curso(models.Model):
+# Suas classes
+class Bot(models.Model):
     nome = models.CharField(max_length=150)
-    campus = models.ForeignKey(Campus, on_delete=models.PROTECT)
-    # Se quiser apagar tudo, faz um efeito cascata com todas as ligações. Utilize Cascate ao invés de protec.
-
-class TipoSolivitacao(models.Model):
     descricao = models.CharField(max_length=250, verbose_name="descrição")
-    prazo_externo = models.CharField(max_length=250)
-    prazo_externo_dias = models.PositiveSmallIntegerField(defalt=0)
-    prazo_interno = models.CharField(max_length=250)
-    prazo_interno_dias = models.PositiveSmallIntegerField(default=0)
+    categoria = categoria
+    link = models.CharField(max_length=255)
+    cadastro_em = models.DateField(auto_now = True)
+
+class categoria(models.Model):
+    nome = models.CharField(max_length=150)
+
+class Avaliacao(models.Model):
+    nota = models.IntegerField(DecimalField = 1, MaxValueValidator = 10,  MinValueValidator = 0.0)
+    bot = Bot
+    data_hora = models.DateField(auto_now = True)
+
+class Comentario(models.Model):
+    comentario = models.TextField()
+    data_hora = models.DateField(auto_now = True)
+    bot = Bot
