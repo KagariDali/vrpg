@@ -3,9 +3,19 @@ from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from .models import Categoria, Bot, Avaliacao,Comentario
 from django.urls import reverse_lazy
 
+'''class Inicio(TemplateView):
+    template_name = 'paginas/index.html'''
+
+# O chat GPT gerou este código para que eu possa rodar meu index. Perguntar ao professor o que isso faz.
 class Inicio(TemplateView):
     template_name = 'paginas/index.html'
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['bots'] = Bot.objects.select_related('categoria').all().order_by('-cadastro_em')
+        context['avaliacoes'] = Avaliacao.objects.all()
+        context['comentarios'] = Comentario.objects.all()
+        return context
 
 class SobreView(TemplateView):
     template_name = 'paginas/sobre.html'
