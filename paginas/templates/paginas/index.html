@@ -12,54 +12,19 @@
     <header>
         <h1>🤖 Catálogo de Bots</h1>
         <nav>
-            <a href="{% url 'index' %}">Início</a> |
+            <a href="{% url 'index' %}">Biblioteca</a> |
             <a href="{% url 'sobre' %}">Sobre</a> |
             <a href="{% url 'cadastrar-bot' %}">Cadastrar Bot</a> |
-            <a href="{% url 'Avalie' %}">Avaliar</a> |
-            <a href="{% url 'Comente' %}">Comentar</a> |
-            <a href="{% url 'cadastrar-categoria' %}">Nova Categoria</a>
         </nav>
     </header>
 
     <main>
+        {% block conteudo %}
         <h2>📋 Lista de Bots</h2>
-
-        {% if bots %}
-            <ul>
-                {% for bot in bots %}
-                    <li style="margin-bottom: 20px;">
-                        <h3>{{ bot.nome }} (Categoria: {{ bot.categoria.nome }})</h3>
-                        <p>{{ bot.descricao }}</p>
-                        <p><a href="{{ bot.link }}" target="_blank">🔗 Acessar Bot</a></p>
-                        <p><strong>Cadastrado em:</strong> {{ bot.cadastro_em|date:"d/m/Y H:i" }}</p>
-
-                        <h4>Avaliações:</h4>
-                        <ul>
-                            {% for avaliacao in avaliacoes %}
-                                {% if avaliacao.bot.id == bot.id %}
-                                    <li>Nota: {{ avaliacao.nota }} - {{ avaliacao.data_hora }}</li>
-                                {% endif %}
-                            {% empty %}
-                                <li>Sem avaliações.</li>
-                            {% endfor %}
-                        </ul>
-
-                        <h4>Comentários:</h4>
-                        <ul>
-                            {% for comentario in comentarios %}
-                                {% if comentario.bot.id == bot.id %}
-                                    <li>{{ comentario.comentario }} <small>({{ comentario.data_hora|date:"d/m/Y H:i" }})</small></li>
-                                {% endif %}
-                            {% empty %}
-                                <li>Sem comentários.</li>
-                            {% endfor %}
-                        </ul>
-                    </li>
-                {% endfor %}
-            </ul>
-        {% else %}
-            <p>Nenhum bot cadastrado ainda.</p>
-        {% endif %}
+        <p>
+            Conteúdo da página..
+        </p>
+        {% endblock %}
     </main>
 
     <footer>
@@ -69,35 +34,3 @@
 </body>
 </html>
 
-<!--{% load static %}
-
-<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    {% block titulo %}
-    <title> Pagina inicial pa</title>
-    {% endblock titulo %}
-
-    <link rel="stylesheet" href="{% static 'css/estilo.css' %}">
-
-</head>
-<body>
-    <h4>Menu Superior </h4>
-    <ul>
-        <li>
-            <a href="{% url 'index' %}"> Inicio</a>
-        </li>
-        <li>
-            <a href="{% url 'sobre' %}"> Sobre Nós</a>
-        </li>
-    </ul>
-    {%    block conteudo    %}
-    <h3>Página inicial</h3>
-    <p>Bem vindos a página inicial de Programação Web</p>
-    {%   endblock   %}
-
-    <p>Desenvolvido por mim mesmo >:) </p>
-</body>
-</html>
