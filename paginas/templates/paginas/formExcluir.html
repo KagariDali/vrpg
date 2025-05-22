@@ -1,0 +1,26 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ titulo }}</title>
+    <link rel="stylesheet" href="{% static 'css/estilo.css' %}">
+</head>
+<body>
+
+    <main>
+        <h2>{{ titulo }}</h2>
+
+        <form method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <input type="submit" value="Excluir">
+        </form>
+
+        <div style="text-align: center;">
+            <a href="{% url 'index' %}">← Voltar para o início</a>
+        </div>
+    </main>
+
+</body>
+</html>
