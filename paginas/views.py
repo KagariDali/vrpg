@@ -90,20 +90,20 @@ class AvaliacaoUpdate(UpdateView):
 
 class CategoriaDelete(DeleteView):
     model = Categoria
-    template_name = 'templates\paginas\formExcluir.html'
+    template_name = 'paginas\formExcluir.html'
     success_url = reverse_lazy('index')
 
 class BotDelete(DeleteView):
     model = Bot
-    template_name = 'templates\paginas\formExcluir.html'
+    template_name = 'paginas\formExcluir.html'
     success_url = reverse_lazy('index')
 
 class ComentarioDelete(DeleteView):
     model = Comentario
-    template_name = 'templates\paginas\formExcluir.html'
+    template_name = 'paginas\formExcluir.html'
     success_url = reverse_lazy('index')
 
 class AvaliacaoDelete(DeleteView):
     model = Avaliacao
-    template_name = 'templates\paginas\formExcluir.html'
+    template_name = 'paginas\formExcluir.html'
     success_url = reverse_lazy('index')

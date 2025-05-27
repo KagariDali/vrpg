@@ -3,19 +3,18 @@
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
-    <title>Confirmar Exclusão</title>
+    <title>Atualizar {{ object }}</title>
     <link rel="stylesheet" href="{% static 'css/estilo.css' %}">
 </head>
 <body>
 
     <main>
-        <h2>⚠️ Confirmação de Exclusão</h2>
-
-        <p>Você tem certeza que deseja excluir <strong>"{{ object }}"</strong>?</p>
+        <h2>✍️ Atualizar {{ object }}</h2>
 
         <form method="post">
             {% csrf_token %}
-            <input type="submit" value="excluir">
+            {{ form.as_p }}
+            <input type="submit" value="Salvar Alterações">
         </form>
 
         <div style="text-align: center; margin-top: 20px;">

@@ -9,20 +9,20 @@ urlpatterns = [
     path("sobre/", SobreView.as_view(), name="sobre"),
 
 
-    path('Cadastrar/bot/', BotCreate.as_view(), name="cadastrar-bot"),
-    path('Cadastrar/avaliar/', AvaliacaoCreate.as_view(), name="Avalie"),
-    path('Cadastrar/Comentario/', ComentarioCreate.as_view(), name="Comente"),
-    path('Cadastrar/Categoria/', CategoriaCreate.as_view(), name="cadastrar-categoria"),
+    path('cadastrar/bot/', BotCreate.as_view(), name="cadastrar-bot"),
+    path('cadastrar/avaliar/', AvaliacaoCreate.as_view(), name="Avalie"),
+    path('cadastrar/comentario/', ComentarioCreate.as_view(), name="Comente"),
+    path('cadastrar/categoria/', CategoriaCreate.as_view(), name="cadastrar-categoria"),
 
-    path('Atualizar/bot/', BotUpdate.as_view(), name="Atualizar-bot"),
-    path('Atualizar/Categoria/', CategoriaUpdate.as_view(), name="Atualizar-Categoria"),
-    path('Atualizar/Comentario/', ComentarioUpdate.as_view(), name="Editar-Comentario"),
-    path('Atualizar/Update/', AvaliacaoUpdate.as_view(), name="Atualizar-Avaliacao"),
+    path('Atualizar/bot/<int:pk>/', BotUpdate.as_view(), name="Atualizar-bot"),
+    path('atualizar/categoria/<int:pk>/', CategoriaUpdate.as_view(), name="Atualizar-Categoria"),
+    path('atualizar/comentario/<int:pk>/', ComentarioUpdate.as_view(), name="Editar-Comentario"),
+    path('atualizar/avaliacao/<int:pk>/', AvaliacaoUpdate.as_view(), name="Atualizar-Avaliacao"),
 
-    path('Deletar/bot/', BotDelete.as_view(), name="Deletar-bot"),
-    path('Deletar/categoria/', CategoriaDelete.as_view(), name="Deletar-categoria"),
-    path('Deletar/Comentario/', ComentarioDelete.as_view(), name="Deletar-comentario"),
-    path('Deletar/Avaliacao/', AvaliacaoDelete.as_view(), name="Deletar-avalaiacao"),
+    path('deletar/bot/<int:pk>/<int:pk>/', BotDelete.as_view(), name="Deletar-bot"),
+    path('deletar/categoria/<int:pk>/', CategoriaDelete.as_view(), name="Deletar-categoria"),
+    path('deletar/comentario/<int:pk>/', ComentarioDelete.as_view(), name="Deletar-comentario"),
+    path('deletar/avaliacao/<int:pk>/', AvaliacaoDelete.as_view(), name="Deletar-avalaiacao"),
     
 
 ]
