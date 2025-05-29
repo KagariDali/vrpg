@@ -1,4 +1,4 @@
-from django.views.generic import TemplateView
+from django.views.generic import TemplateView, ListView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from .models import Categoria, Bot, Avaliacao,Comentario
 from django.urls import reverse_lazy
@@ -93,17 +93,28 @@ class CategoriaDelete(DeleteView):
     template_name = 'paginas\formExcluir.html'
     success_url = reverse_lazy('index')
 
+
 class BotDelete(DeleteView):
     model = Bot
     template_name = 'paginas\formExcluir.html'
     success_url = reverse_lazy('index')
+
 
 class ComentarioDelete(DeleteView):
     model = Comentario
     template_name = 'paginas\formExcluir.html'
     success_url = reverse_lazy('index')
 
+
 class AvaliacaoDelete(DeleteView):
     model = Avaliacao
     template_name = 'paginas\formExcluir.html'
     success_url = reverse_lazy('index')
+
+
+##############################################################################
+
+
+class botList(ListView):
+    model = Bot
+    template_name = 'paginas/bots.html'

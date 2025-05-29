@@ -3,11 +3,13 @@ from django.urls import path
 from .views import (Inicio, SobreView,  BotCreate, CategoriaCreate, AvaliacaoCreate, ComentarioCreate, 
 BotUpdate, CategoriaUpdate, AvaliacaoUpdate, ComentarioUpdate,
 BotDelete, CategoriaDelete, AvaliacaoDelete, ComentarioDelete)
+from .views import botList
 
 urlpatterns = [
 
     path("", Inicio.as_view(), name="index"),
     path("sobre/", SobreView.as_view(), name="sobre"),
+    path("listar/bots/", botsList.as_view(), name="listar-bots"),
 
 
     path('cadastrar/bot/', BotCreate.as_view(), name="cadastrar-bot"),
