@@ -26,7 +26,7 @@ class CategoriaCreate(CreateView):
     model = Categoria # classe criada no models.
     fields = [ 'nome' ] # lista com os nomes dos atributos.
     success_url = reverse_lazy('index') # name da url para redirecionar.
-    extra_context = {'titulo': 'Categorias de bot'}
+    extra_context = {'titulo': 'Categorias de bot', 'botao' : 'Cadastrar'}
 
 
 class BotCreate(CreateView):
@@ -34,7 +34,7 @@ class BotCreate(CreateView):
     model = Bot # classe criada no models.
     fields = [ 'nome', 'descricao', 'categoria', 'link' ] # lista com os nomes dos atributos.
     success_url = reverse_lazy('index') # name da url para redirecionar.
-    extra_context = {'titulo': 'Criar Bot'}
+    extra_context = {'titulo': 'Criar Bot', 'botao' : 'Cadastrar'}
 
 
 class ComentarioCreate(CreateView):
@@ -42,7 +42,7 @@ class ComentarioCreate(CreateView):
     model = Comentario # classe criada no models.
     fields = [ 'comentario' , 'bot'] # lista com os nomes dos atributos.
     success_url = reverse_lazy('index') # name da url para redirecionar.
-    extra_context = {'titulo': 'Comente sobre o Bot'}
+    extra_context = {'titulo': 'Comente sobre o Bot', 'botao' : 'Cadastrar'}
 
 
 class AvaliacaoCreate(CreateView):
@@ -50,7 +50,7 @@ class AvaliacaoCreate(CreateView):
     model = Avaliacao # classe criada no models.
     fields = [ 'nota', 'bot' ] # lista com os nomes dos atributos.
     success_url = reverse_lazy('index') # name da url para redirecionar.
-    extra_context = {'titulo': 'De uma nota ao Bot'}
+    extra_context = {'titulo': 'De uma nota ao Bot', 'botao' : 'Cadastrar'}
 
 #######################################################################
 
@@ -59,7 +59,7 @@ class CategoriaUpdate(UpdateView):
     model = Categoria # classe criada no models.
     fields = [ 'nome' ] # lista com os nomes dos atributos.
     success_url = reverse_lazy('index') # name da url para redirecionar.
-    extra_context = {'titulo': 'Categorias de bot'}
+    extra_context = {'titulo': 'Categorias de bot', 'botao' : 'Cadastrar'}
 
 
 class BotUpdate(UpdateView):
@@ -67,7 +67,7 @@ class BotUpdate(UpdateView):
     model = Bot # classe criada no models.
     fields = [ 'nome', 'descricao', 'categoria', 'link' ] # lista com os nomes dos atributos.
     success_url = reverse_lazy('index') # name da url para redirecionar.
-    extra_context = {'titulo': 'Criar Bot'}
+    extra_context = {'titulo': 'Criar Bot', 'botao' : 'Cadastrar'}
 
 
 class ComentarioUpdate(UpdateView):
@@ -75,7 +75,7 @@ class ComentarioUpdate(UpdateView):
     model = Comentario # classe criada no models.
     fields = [ 'comentario' , 'bot'] # lista com os nomes dos atributos.
     success_url = reverse_lazy('index') # name da url para redirecionar.
-    extra_context = {'titulo': 'Comente sobre o Bot'}
+    extra_context = {'titulo': 'Comente sobre o Bot', 'botao' : 'Cadastrar'}
 
 
 class AvaliacaoUpdate(UpdateView):
@@ -83,7 +83,7 @@ class AvaliacaoUpdate(UpdateView):
     model = Avaliacao # classe criada no models.
     fields = [ 'nota', 'bot' ] # lista com os nomes dos atributos.
     success_url = reverse_lazy('index') # name da url para redirecionar.
-    extra_context = {'titulo': 'De uma nota ao Bot'}
+    extra_context = {'titulo': 'De uma nota ao Bot', 'botao' : 'Cadastrar'}
 
 
 ##############################################################################

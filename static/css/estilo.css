@@ -150,3 +150,60 @@ input[type="submit"]:hover {
     line-height: 1.7em;
     font-size: 1.1em;
 }
+
+button,
+input[type="submit"],
+a.botao {
+    background-color: #0077cc;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    margin: 5px;
+    font-size: 1em;
+    border-radius: 6px;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-block;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+button:hover,
+input[type="submit"]:hover,
+a.botao:hover {
+    background-color: #005fa3;
+    transform: scale(1.05);
+}
+
+button:active,
+input[type="submit"]:active,
+a.botao:active {
+    background-color: #004d80;
+    transform: scale(0.98);
+}
+
+/* 🔥 Botões de Ação Especial (ex: excluir) */
+.botao-excluir {
+    background-color: #cc0000;
+}
+
+.botao-excluir:hover {
+    background-color: #990000;
+}
+
+/* ✅ Botão de sucesso (ex: confirmar, salvar) */
+.botao-sucesso {
+    background-color: #00a859;
+}
+
+.botao-sucesso:hover {
+    background-color: #007f45;
+}
+
+/* 🔙 Botões de navegação (ex: voltar) */
+.botao-voltar {
+    background-color: #555;
+}
+
+.botao-voltar:hover {
+    background-color: #333;
+}
