@@ -104,6 +104,7 @@ label {
 }
 
 input[type="text"],
+input[type="password"],
 input[type="url"],
 select,
 textarea {

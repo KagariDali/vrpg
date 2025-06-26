@@ -2,6 +2,7 @@ from django.views.generic import TemplateView, ListView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from .models import Categoria, Bot, Avaliacao,Comentario
 from django.urls import reverse_lazy
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 '''class Inicio(TemplateView):
     template_name = 'paginas/index.html'''
@@ -21,7 +22,7 @@ class SobreView(TemplateView):
     template_name = 'paginas/sobre.html'
 
 
-class CategoriaCreate(CreateView):
+class CategoriaCreate(LoginRequiredMixin, CreateView):
     template_name = "paginas/form.html" # arquivo html com o <form>.
     model = Categoria # classe criada no models.
     fields = [ 'nome' ] # lista com os nomes dos atributos.
@@ -115,6 +116,6 @@ class AvaliacaoDelete(DeleteView):
 ##############################################################################
 
 
-class botList(ListView):
+class BotListView(ListView):
     model = Bot
     template_name = 'paginas/bots.html'
