@@ -3,6 +3,17 @@ from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from .models import Categoria, Bot, Avaliacao,Comentario
 from django.urls import reverse_lazy
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.views.generic import ListView
+from django.contrib.messages.views import SuccessMessageMixin
+from django.views.generic.edit import CreateView
+
+
+
+# Users
+class UserList(LoginRequiredMixin, ListView):
+    model = User
+    template_name = 'User.html'
 
 '''class Inicio(TemplateView):
     template_name = 'paginas/index.html'''
@@ -52,6 +63,12 @@ class AvaliacaoCreate(CreateView):
     fields = [ 'nota', 'bot' ] # lista com os nomes dos atributos.
     success_url = reverse_lazy('index') # name da url para redirecionar.
     extra_context = {'titulo': 'De uma nota ao Bot', 'botao' : 'Cadastrar'}
+
+class CriarUserView(SuccessMessageMixin, CreateView):
+    model = UserList
+    fields = ['nome', 'email']
+    success_url = '/User/'
+    success_message = "Usuário criado com sucesso!"
 
 #######################################################################
 

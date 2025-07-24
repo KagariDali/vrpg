@@ -1,4 +1,14 @@
 from django.db import models
+from django.contrib.auth.models import User
+from django.db import models
+
+# Usuario
+class User(models.Model):
+    nome = models.CharField(max_length=100)
+    email = models.EmailField(max_length=200)
+    cadastrado_em = models.DateTimeField(auto_now_add=True)
+    usuario = models.OneToOneField(User, on_delete=models.CASCADE, related_name='user')
+
 
 # Suas classes
 

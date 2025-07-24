@@ -9,6 +9,14 @@
 </head>
 <body>
 
+    {% if messages %}
+    <ul>
+        {% for message in messages %}
+            <li>{{ message }}</li>
+        {% endfor %}
+    </ul>
+{% endif %}
+
     <header>
         <h1>🤖 Catálogo de Bots</h1>
         <nav>
