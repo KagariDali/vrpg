@@ -1,14 +1,5 @@
 from django.db import models
 from django.contrib.auth.models import User
-from django.db import models
-
-# Usuario
-class User(models.Model):
-    nome = models.CharField(max_length=100)
-    email = models.EmailField(max_length=200)
-    cadastrado_em = models.DateTimeField(auto_now_add=True)
-    usuario = models.OneToOneField(User, on_delete=models.CASCADE, related_name='user')
-
 
 # Suas classes
 
@@ -25,7 +16,7 @@ class Bot(models.Model):
     categoria = models.ForeignKey(Categoria, on_delete=models.PROTECT)
     link = models.URLField(max_length=255)
     cadastro_em = models.DateTimeField(auto_now_add = True)
-
+    usuario = models.ForeignKey(User, on_delete=models.PROTECT)
     def __str__(self):
         return self.nome
 
@@ -34,6 +25,7 @@ class Avaliacao(models.Model):
     nota = models.PositiveSmallIntegerField(default=5)
     bot = models.ForeignKey(Bot, on_delete=models.PROTECT)
     data_hora = models.DateField(auto_now_add = True)
+    usuario = models.ForeignKey(User, on_delete=models.PROTECT)
     
     def __str__(self):
         return self.nota
@@ -43,6 +35,7 @@ class Comentario(models.Model):
     comentario = models.TextField()
     data_hora = models.DateTimeField(auto_now_add = True)
     bot = models.ForeignKey(Bot, on_delete=models.PROTECT)
+    usuario = models.ForeignKey(User, on_delete=models.PROTECT)
 
     def __str__(self):
         return self.comentario
