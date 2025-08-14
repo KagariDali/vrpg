@@ -30,6 +30,7 @@ class SobreView(TemplateView):
     template_name = 'paginas/sobre.html'
 
 
+
 class CategoriaCreate(LoginRequiredMixin, CreateView):
     template_name = "paginas/form.html" # arquivo html com o <form>.
     model = Categoria # classe criada no models.
@@ -45,6 +46,13 @@ class BotCreate(CreateView):
     success_url = reverse_lazy('index') # name da url para redirecionar.
     extra_context = {'titulo': 'Criar Bot', 'botao' : 'Cadastrar'}
 
+    def form_valid(self, form):
+        # pegar o usuário que está autenticado
+        form.instance.usuario = self.request.user
+        url = super().form_valid(form)
+        return url
+    
+
 
 class ComentarioCreate(CreateView):
     template_name = "paginas/form.html" # arquivo html com o <form>.
@@ -53,6 +61,12 @@ class ComentarioCreate(CreateView):
     success_url = reverse_lazy('index') # name da url para redirecionar.
     extra_context = {'titulo': 'Comente sobre o Bot', 'botao' : 'Cadastrar'}
 
+    def form_valid(self, form):
+        # pegar o usuário que está autenticado
+        form.instance.usuario = self.request.user
+        url = super().form_valid(form)
+        return url
+
 
 class AvaliacaoCreate(CreateView):
     template_name = "paginas/form.html" # arquivo html com o <form>.
@@ -60,6 +74,12 @@ class AvaliacaoCreate(CreateView):
     fields = [ 'nota', 'bot' ] # lista com os nomes dos atributos.
     success_url = reverse_lazy('index') # name da url para redirecionar.
     extra_context = {'titulo': 'De uma nota ao Bot', 'botao' : 'Cadastrar'}
+
+    def form_valid(self, form):
+        # pegar o usuário que está autenticado
+        form.instance.usuario = self.request.user
+        url = super().form_valid(form)
+        return url                    
 
 #######################################################################
 

@@ -19,7 +19,7 @@ urlpatterns = [
         extra_context = {'titulo': 'Atualizar senha', 
                          'botao' : 'Entrar'}), name="senha"),
 
-    path("sair/", auth_views.LogoutView.as_view(), name="logout"),
+    path("logout/", auth_views.LogoutView.as_view(), name="logout"),
 
 
     path('cadastrar/bot/', BotCreate.as_view(), name="cadastrar-bot"),
