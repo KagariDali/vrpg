@@ -1,0 +1,36 @@
+{% extends "paginas/index.html" %}
+{% load static %}
+{% block conteudo %}
+<div class="container my-2">
+  <h3 class="my-5">Comentários cadastrados</h3>
+  <table class="table table-striped">
+    <tr>
+      <th>Comentário</th>
+      <th>Bot</th>
+      <th>Usuário</th>
+      <th>Data</th>
+      <th>Opções</th>
+    </tr>
+    {% for comentario in object_list %}
+    <tr>
+      <td>{{ comentario.comentario|truncatechars:50 }}</td>
+      <td>{{ comentario.bot.nome }}</td>
+      <td>{{ comentario.usuario.username }}</td>
+      <td>{{ comentario.data_hora|date:"d/m/Y H:i" }}</td>
+      <td>
+        <a href="{% url 'Atualizar-comentario' comentario.pk %}" class="btn btn-sm btn-custom-primary">
+          <i class="bi bi-pencil-square"></i>
+        </a>
+        <a href="{% url 'Deletar-comentario' comentario.pk %}" class="btn btn-sm btn-danger">
+          <i class="bi bi-trash"></i>
+        </a>
+      </td>
+    </tr>
+    {% empty %}
+    <tr>
+      <td colspan="5">Nenhum comentário encontrado.</td>
+    </tr>
+    {% endfor %}
+  </table>
+</div>
+{% endblock %}

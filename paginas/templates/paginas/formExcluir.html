@@ -1,27 +1,28 @@
+{% extends "paginas/index.html" %}
 {% load static %}
-<!DOCTYPE html>
-<html lang="pt-br">
-<head>
-    <meta charset="UTF-8">
-    <title>Confirmar Exclusão</title>
-    <link rel="stylesheet" href="{% static 'css/estilo.css' %}">
-</head>
-<body>
 
-    <main>
-        <h2>⚠️ Confirmação de Exclusão</h2>
+{% block conteudo %}
 
-        <p>Você tem certeza que deseja excluir <strong>"{{ object }}"</strong>?</p>
+<div class="container my-2 py-5 text-center">
 
-        <form method="post">
-            {% csrf_token %}
-            <input type="submit" value="excluir">
-        </form>
+    <h2>⚠️ Confirmação de Exclusão</h2>
 
-        <div style="text-align: center; margin-top: 20px;">
-            <a href="{% url 'index' %}">← Cancelar e voltar</a>
-        </div>
-    </main>
+    <br>
 
-</body>
-</html>
+    <h4>Você tem certeza que deseja excluir <strong>"{{ object }}"</strong>?</h4>
+
+    <br>
+
+    <form method="post">
+        {% csrf_token %}
+        <input type="submit" value="Excluir" class="btn btn-danger btn-lg">
+    </form>
+
+    <br>
+
+    <div style="text-align: center; margin-top: 20px;">
+        <a href="{% url 'index' %}">← Cancelar e voltar</a>
+    </div>
+
+</div>
+{% endblock %}

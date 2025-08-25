@@ -7,6 +7,25 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import ListView
 from django.contrib.messages.views import SuccessMessageMixin
 from django.views.generic.edit import CreateView
+# Adicione no início do arquivo depois das outras importações
+from django.contrib.auth.models import User, Group
+from .forms import UsuarioCadastroForm
+
+
+
+class CadastroUsuarioView(CreateView):
+    model = User
+    form_class = UsuarioCadastroForm
+    template_name = 'cadastros/form.html'
+    success_url = reverse_lazy('login')
+    extra_context = {'titulo': 'Registro de usuários'}
+
+
+    def form_valid(self, form):
+
+        url = super().form_valid(form)
+
+        return url
 
 
 
@@ -39,7 +58,7 @@ class CategoriaCreate(LoginRequiredMixin, CreateView):
     extra_context = {'titulo': 'Categorias de bot', 'botao' : 'Cadastrar'}
 
 
-class BotCreate(CreateView):
+class BotCreate(LoginRequiredMixin, CreateView):
     template_name = "paginas/form.html" # arquivo html com o <form>.
     model = Bot # classe criada no models.
     fields = [ 'nome', 'descricao', 'categoria', 'link' ] # lista com os nomes dos atributos.
@@ -54,7 +73,7 @@ class BotCreate(CreateView):
     
 
 
-class ComentarioCreate(CreateView):
+class ComentarioCreate(LoginRequiredMixin, CreateView):
     template_name = "paginas/form.html" # arquivo html com o <form>.
     model = Comentario # classe criada no models.
     fields = [ 'comentario' , 'bot'] # lista com os nomes dos atributos.
@@ -68,7 +87,7 @@ class ComentarioCreate(CreateView):
         return url
 
 
-class AvaliacaoCreate(CreateView):
+class AvaliacaoCreate(LoginRequiredMixin, CreateView):
     template_name = "paginas/form.html" # arquivo html com o <form>.
     model = Avaliacao # classe criada no models.
     fields = [ 'nota', 'bot' ] # lista com os nomes dos atributos.
@@ -83,67 +102,79 @@ class AvaliacaoCreate(CreateView):
 
 #######################################################################
 
-class CategoriaUpdate(UpdateView):
+class CategoriaUpdate(LoginRequiredMixin, UpdateView):
     template_name = "paginas/form.html" # arquivo html com o <form>.
     model = Categoria # classe criada no models.
     fields = [ 'nome' ] # lista com os nomes dos atributos.
     success_url = reverse_lazy('index') # name da url para redirecionar.
-    extra_context = {'titulo': 'Categorias de bot', 'botao' : 'Cadastrar'}
+    extra_context = {'titulo': 'Categorias de bot', 'botao' : 'Atualizar'}
 
 
-class BotUpdate(UpdateView):
+class BotUpdate(LoginRequiredMixin, UpdateView):
     template_name = "paginas/form.html" # arquivo html com o <form>.
     model = Bot # classe criada no models.
     fields = [ 'nome', 'descricao', 'categoria', 'link' ] # lista com os nomes dos atributos.
     success_url = reverse_lazy('index') # name da url para redirecionar.
-    extra_context = {'titulo': 'Criar Bot', 'botao' : 'Cadastrar'}
+    extra_context = {'titulo': 'Criar Bot', 'botao' : 'Atualizar'}
 
 
-class ComentarioUpdate(UpdateView):
+class ComentarioUpdate(LoginRequiredMixin, UpdateView):
     template_name = "paginas/form.html" # arquivo html com o <form>.
     model = Comentario # classe criada no models.
     fields = [ 'comentario' , 'bot'] # lista com os nomes dos atributos.
     success_url = reverse_lazy('index') # name da url para redirecionar.
-    extra_context = {'titulo': 'Comente sobre o Bot', 'botao' : 'Cadastrar'}
+    extra_context = {'titulo': 'Comente sobre o Bot', 'botao' : 'Atualizar'}
 
 
-class AvaliacaoUpdate(UpdateView):
+class AvaliacaoUpdate(LoginRequiredMixin, UpdateView):
     template_name = "paginas/form.html" # arquivo html com o <form>.
     model = Avaliacao # classe criada no models.
     fields = [ 'nota', 'bot' ] # lista com os nomes dos atributos.
     success_url = reverse_lazy('index') # name da url para redirecionar.
-    extra_context = {'titulo': 'De uma nota ao Bot', 'botao' : 'Cadastrar'}
+    extra_context = {'titulo': 'De uma nota ao Bot', 'botao' : 'Atualizar'}
 
 
 ##############################################################################
 
-class CategoriaDelete(DeleteView):
+class CategoriaDelete(LoginRequiredMixin, DeleteView):
     model = Categoria
-    template_name = 'paginas\formExcluir.html'
+    template_name = 'paginas/formExcluir.html'
     success_url = reverse_lazy('index')
 
 
-class BotDelete(DeleteView):
+class BotDelete(LoginRequiredMixin, DeleteView):
     model = Bot
-    template_name = 'paginas\formExcluir.html'
+    template_name = 'paginas/formExcluir.html'
     success_url = reverse_lazy('index')
 
 
-class ComentarioDelete(DeleteView):
+class ComentarioDelete(LoginRequiredMixin, DeleteView):
     model = Comentario
-    template_name = 'paginas\formExcluir.html'
+    template_name = 'paginas/formExcluir.html'
     success_url = reverse_lazy('index')
 
 
-class AvaliacaoDelete(DeleteView):
+class AvaliacaoDelete(LoginRequiredMixin, DeleteView):
     model = Avaliacao
-    template_name = 'paginas\formExcluir.html'
+    template_name = 'paginas/formExcluir.html'
     success_url = reverse_lazy('index')
 
 
 ##############################################################################
 
 
-class BotListView(ListView):
+class BotListView(LoginRequiredMixin, ListView):
     model = Bot
-    template_name = 'paginas/bots.html'
+    template_name = 'paginas/listas/bots.html'
+
+class AvaliacaoListView(LoginRequiredMixin, ListView):
+    model = Avaliacao
+    template_name = 'paginas/listas/avaliacoes.html'
+
+class ComentarioListView(LoginRequiredMixin, ListView):
+    model = Comentario
+    template_name = 'paginas/listas/comentarios.html'
+
+class CategoriaListView(LoginRequiredMixin, ListView):
+    model = Categoria
+    template_name = 'paginas/listas/categorias.html'

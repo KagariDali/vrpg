@@ -3,20 +3,23 @@
 {% load static %}
 
 {% block conteudo %}
+<div class="container my-2">
 
-<h2>{{ titulo }}</h2>
+    <h2>{{ titulo }}</h2>
 
-<form method="POST">
-        {% csrf_token %}
-    
-        {{ form.as_p }}
-    
-        <button type="submit" class="btn btn-success">
-            {{ botao }}
-        </button>
+    <form method="POST">
+            {% csrf_token %}
+        
+            {{ form.as_p }}
+        
+            <button type="submit" class="btn btn-success">
+                {{ botao }}
+            </button>
 
-        <div style="text-align: center; margin-top: 20px;">
-            <a href="{% url 'index' %}">← Cancelar e voltar</a>
-        </div>
- </form>
- {% endblock %}
+            <div style="text-align: center; margin-top: 20px;">
+                <a href="{% url 'index' %}">← Cancelar e voltar</a>
+            </div>
+    </form>
+
+</div>
+{% endblock %}

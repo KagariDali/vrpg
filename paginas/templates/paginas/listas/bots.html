@@ -1,0 +1,42 @@
+{% extends "paginas/index.html" %}
+{% load static %}
+{% block conteudo %}
+<div class="container my-2">
+
+    <h3 class="my-5">Bots cadastrados</h3>
+
+        <table class="table table-striped">
+            <tr>
+                <th>Nome</th>
+                <th>Descrição</th>
+                <th>Categoria</th>
+                <th>Cadastrado em</th>
+                <th>Link</th>
+                <th>Opções</th>
+            </tr>
+            {% for bot in object_list %}
+            <tr>
+                <td>{{ bot.nome }}</td>
+                <td>{{ bot.descricao }}</td>
+                <td>{{ bot.categoria }}</td>
+                <td>{{ bot.cadastrado_em }}</td>
+                <td>{{ bot.link }}</td>
+                
+                <td>
+                    <a href="{% url "Atualizar-bot" bot.pk %}" class="btn btn-sm btn-custom-primary">
+                        <i class="bi bi-pencil-square"></i>
+                    </a>
+                    <a href="{% url "Deletar-bot" bot.pk %}" class="btn btn-sm btn-danger">
+                        <i class="bi bi-trash"></i>
+                    </a>
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="6">Nenhum registro encontrado.</td>
+            </tr>
+            {% endfor %}
+        </table>
+
+</div>        
+{% endblock conteudo %}

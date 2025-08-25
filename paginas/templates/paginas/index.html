@@ -1,87 +1,191 @@
 {% load static %}
 <!DOCTYPE html>
-<!-- Adiciona classes h-100 para que o footer possa ser fixado na parte inferior -->
 <html lang="pt-br" data-bs-theme="dark" class="h-100">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- Bloco de título para ser personalizado em cada página -->
-    <title>{% block title %}Catálogo de Bots{% endblock %}</title>
-    
-    <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-    
-    <!-- Bootstrap Icons -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
-    
-    <!-- Seu arquivo de estilo personalizado -->
-    <link rel="stylesheet" href="{% static 'css/estilo.css' %}">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>{% block title %}Catálogo de Bots{% endblock %}</title>
+
+  <!-- Bootstrap 5.3 -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- Bootstrap Icons -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+
+  <!-- Estilos do projeto -->
+  <link rel="stylesheet" href="{% static 'css/estilo.css' %}">
 </head>
-<!-- O corpo usa flexbox para empurrar o footer para baixo em páginas com pouco conteúdo -->
+
 <body class="d-flex flex-column h-100">
 
-    <!-- Navbar com design moderno e lógica Django -->
-    <nav class="navbar navbar-expand-lg navbar-dark">
-        <div class="container">
-            <a class="navbar-brand" href="{% url 'index' %}"><i class="bi bi-robot me-2"></i>Catálogo de Bots</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
-                <ul class="navbar-nav align-items-center">
-                    {% if request.user.is_authenticated %}
-                        <!-- Links para usuários autenticados -->
-                        <li class="nav-item"><a class="nav-link" href="{% url 'index' %}">Biblioteca</a></li>
-                        <li class="nav-item"><a class="nav-link" href="{% url 'cadastrar-bot' %}">Cadastrar Bot</a></li>
-                        <li class="nav-item"><a class="nav-link" href="{% url 'sobre' %}">Sobre</a></li>
-                        <li class="nav-item">
-                            <a class="btn btn-custom-outline ms-lg-2 mt-2 mt-lg-0" href="{% url 'logout' %}">Sair</a>
-                        </li>
-                    {% else %}
-                        <!-- Links para visitantes -->
-                        <li class="nav-item"><a class="nav-link" href="{% url 'sobre' %}">Sobre</a></li>
-                        <li class="nav-item"><a class="nav-link" href="{% url 'login' %}">Entrar</a></li>
-                        <li class="nav-item">
-                            <!-- Altere 'signup' para a URL de cadastro correta do seu projeto -->
-                            <a class="btn btn-custom-primary ms-lg-2 mt-2 mt-lg-0" href="#">Cadastre-se</a>
-                        </li>
-                    {% endif %}
-                </ul>
-            </div>
-        </div>
-    </nav>
+  <!-- NAVBAR -->
+  <nav class="navbar navbar-expand-lg navbar-dark">
+    <div class="container">
+      <a class="navbar-brand d-flex align-items-center" href="{% url 'index' %}">
+        <i class="bi bi-robot fs-4 me-2"></i> Catálogo de Bots
+      </a>
 
-    <!-- Conteúdo Principal -->
-    <main class="flex-shrink-0">
-        <div class="container my-5">
-            <!-- Container para as mensagens do Django -->
-            {% if messages %}
-                <div class="messages-container">
-                    {% for message in messages %}
-                        <!-- A classe do alerta é definida pela tag da mensagem (ex: success, error, warning) -->
-                        <div class="alert alert-{{ message.tags | default:'info' }} alert-dismissible fade show" role="alert">
-                            {{ message }}
-                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                        </div>
-                    {% endfor %}
-                </div>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+        <ul class="navbar-nav align-items-lg-center gap-lg-2">
+          <!-- Botão para o index.html -->
+          <li class="nav-item">
+            <a class="btn btn-sm btn-custom-outline" href="{% url 'index' %}">
+              <i class="bi bi-house-door me-1"></i> Início
+            </a>
+          </li>
+
+          <!-- Navlink para sobre.html -->
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'sobre' %}">Sobre</a>
+          </li>
+
+          <!-- Link para a url listar-bots -->
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'listar-bots' %}">Bots</a>
+        </li>
+
+          <!-- Botão para cadastrarbot.html -->
+          <li class="nav-item">
+            <a class="btn btn-sm btn-custom-primary" href="{% url 'cadastrar-bot' %}">
+              <i class="bi bi-plus-circle me-1"></i> Cadastrar Bot
+            </a>
+          </li>
+
+          {% if request.user.is_authenticated %}
+            {% if request.user.is_superuser %}
+            <!-- DROPDOWN ADMIN -->
+            <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+                aria-expanded="false">
+                Administração
+            </a>
+            <ul class="dropdown-menu dropdown-menu-dark">
+                <!-- Inserir -->
+                <li><a class="dropdown-item" href="{% url 'cadastrar-bot' %}">Inserir Bot</a></li>
+                <li><a class="dropdown-item" href="{% url 'Avalie' %}">Inserir Avaliação</a></li>
+                <li><a class="dropdown-item" href="{% url 'Comente' %}">Inserir Comentário</a></li>
+                <li><a class="dropdown-item" href="{% url 'cadastrar-categoria' %}">Inserir Categoria</a></li>
+
+                <li><hr class="dropdown-divider"></li>
+
+                <!-- Listar -->
+                <li><a class="dropdown-item" href="{% url 'listar-bots' %}">Listar Bots</a></li>
+                <li><a class="dropdown-item" href="{% url 'listar-avaliacoes' %}">Listar Avaliações</a></li>
+                <li><a class="dropdown-item" href="{% url 'listar-comentarios' %}">Listar Comentários</a></li>
+                <li><a class="dropdown-item" href="{% url 'listar-categorias' %}">Listar Categorias</a></li>
+            </ul>
+            </li>
             {% endif %}
 
-            <!-- Bloco de Conteúdo principal que será substituído pelos templates filhos -->
-            {% block conteudo %}
-                <!-- O conteúdo da sua landing page (seção hero) ou de outras páginas virá aqui. -->
-            {% endblock %}
-        </div>
-    </main>
+            <li class="nav-item d-none d-lg-block"><span class="nav-link disabled">|</span></li>
+            <li class="nav-item">
+              <a class="btn btn-sm btn-custom-outline" href="{% url 'logout' %}">Sair</a>
+            </li>
+          {% else %}
+            <li class="nav-item d-none d-lg-block"><span class="nav-link disabled">|</span></li>
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'login' %}">Entrar</a>
+            </li>
+          {% endif %}
+        </ul>
+      </div>
+    </div>
+  </nav>
 
-    <!-- Rodapé -->
-    <footer class="footer mt-auto py-3">
-        <div class="container text-center">
-            <span class="text-light">&copy; {% now "Y" %} - Catálogo de Bots</span>
+  <!-- CONTEÚDO -->
+  <main class="flex-shrink-0">
+    <div class="container my-3">
+      <!-- Mensagens do Django -->
+      {% if messages %}
+        <div class="messages-container">
+          {% for message in messages %}
+            <div class="alert alert-{{ message.tags|default:'info' }} alert-dismissible fade show" role="alert">
+              {{ message }}
+              <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Fechar"></button>
+            </div>
+          {% endfor %}
         </div>
-    </footer>
+      {% endif %}
+    </div>
 
-    <!-- Bootstrap JS -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    {% block conteudo %}
+    <!-- Wrapper que centraliza a listagem; rolagem sempre possível -->
+    <section class="catalog-wrapper">
+      <div class="container catalog-container">
+
+        <!-- Título opcional -->
+        <div class="text-center mb-4">
+          <h1 class="h3 fw-semibold">Explore os Bots</h1>
+          <p class="text-secondary mb-0">Descubra ferramentas por categoria e encontre o link oficial.</p>
+        </div>
+
+        <!-- GRADE DE CARDS -->
+        <div class="row g-4 justify-content-center">
+          {% comment %}
+            Espera-se no contexto uma lista 'bots', cada item com:
+            - bot.image (URL da imagem)      | fallback para uma imagem estática
+            - bot.name
+            - bot.description
+            - bot.category (texto)
+            - bot.url (link externo) OU bot.get_absolute_url
+          {% endcomment %}
+
+          {% for bot in bots %}
+            <div class="col-12 col-sm-10 col-md-6 col-lg-4">
+              <div class="card bot-card h-100">
+                <!--<img
+                  class="card-img-top bot-thumb"
+                  src="{{ bot.image|default_if_none:'' }}"
+                  onerror="this.src='{% static 'img/placeholder-bot.jpg' %}'"
+                  alt="Imagem do bot {{ bot.name }}"
+                >-->
+                <div class="card-body d-flex flex-column">
+                  <div class="d-flex justify-content-between align-items-start mb-2">
+                    <h2 class="h5 card-title mb-0">{{ bot.name }}</h2>
+                    {% if bot.category %}
+                      <span class="badge rounded-pill category-badge">{{ bot.category }}</span>
+                    {% endif %}
+                  </div>
+                  <p class="card-text text-secondary mb-4">{{ bot.description }}</p>
+                  <div class="mt-auto d-flex gap-2">
+                    {% if bot.url %}
+                      <a href="{{ bot.url }}" target="_blank" rel="noopener" class="btn btn-sm btn-custom-primary w-100">
+                        <i class="bi bi-box-arrow-up-right me-1"></i> Acessar
+                      </a>
+                    {% else %}
+                      <a href="{{ bot.get_absolute_url }}" class="btn btn-sm btn-custom-primary w-100">
+                        <i class="bi bi-arrow-right-circle me-1"></i> Detalhes
+                      </a>
+                    {% endif %}
+                  </div>
+                </div>
+              </div>
+            </div>
+          {% empty %}
+            <div class="col-12 col-md-10 col-lg-8">
+              <div class="alert alert-secondary text-center" role="alert">
+                Nenhum bot encontrado. Que tal <a href="{% url 'cadastrar-bot' %}" class="alert-link">cadastrar o primeiro</a>?
+              </div>
+            </div>
+          {% endfor %}
+        </div>
+      </div>
+    </section>
+    {% endblock %}
+  </main>
+
+  <!-- RODAPÉ -->
+  <footer class="footer mt-auto py-3">
+    <div class="container text-center">
+      <span class="text-light">&copy; {% now "Y" %} - Catálogo de Bots</span>
+    </div>
+  </footer>
+
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

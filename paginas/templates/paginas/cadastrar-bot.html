@@ -1,26 +1,45 @@
 {% load static %}
-<!DOCTYPE html>
-<html lang="pt-br">
-<head>
-    <meta charset="UTF-8">
-    <title>{{ titulo }}</title>
-    <link rel="stylesheet" href="{% static 'css/estilo.css' %}">
-</head>
-<body>
 
-    <main>
-        <h2>{{ titulo }}</h2>
-
-        <form method="post">
-            {% csrf_token %}
-            {{ form.as_p }}
-            <input type="submit" value="Cadastrar">
-        </form>
-
-        <div style="text-align: center;">
-            <a href="{% url 'index' %}">← Voltar para o início</a>
+{% block conteudo %}
+<div class="container my-5">
+  <div class="row justify-content-center">
+    <div class="col-md-8 col-lg-6">
+      <div class="card shadow-lg border-0">
+        <div class="card-header text-center bg-primary text-white">
+          <h4 class="mb-0">
+            <i class="bi bi-robot me-2"></i> {{ titulo }}
+          </h4>
         </div>
-    </main>
+        <div class="card-body p-4">
+          <form method="post">
+            {% csrf_token %}
 
-</body>
-</html>
+            <!-- Renderização bonita dos campos -->
+            {% for field in form %}
+              <div class="mb-3">
+                <label class="form-label">{{ field.label }}</label>
+                {{ field }}
+                {% if field.help_text %}
+                  <small class="form-text text-muted">{{ field.help_text }}</small>
+                {% endif %}
+                {% for error in field.errors %}
+                  <div class="text-danger small">{{ error }}</div>
+                {% endfor %}
+              </div>
+            {% endfor %}
+
+            <div class="d-grid gap-2">
+              <button type="submit" class="btn btn-custom-primary">
+                <i class="bi bi-check2-circle me-1"></i> {{ botao }}
+              </button>
+              <a href="{% url 'index' %}" class="btn btn-outline-secondary">
+                ← Cancelar e voltar
+              </a>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
