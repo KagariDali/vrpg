@@ -2,6 +2,8 @@
 
 {% load static %}
 
+<!-- IMPORTAR O CRISPY-->
+ {% load crispy_form_tags %}
 {% block conteudo %}
 <div class="container my-2">
 
@@ -10,7 +12,7 @@
     <form method="POST">
             {% csrf_token %}
         
-            {{ form.as_p }}
+            {{ form|crispy }}
         
             <button type="submit" class="btn btn-success">
                 {{ botao }}
@@ -21,5 +23,5 @@
             </div>
     </form>
 
-</div>
+</div>  
 {% endblock %}

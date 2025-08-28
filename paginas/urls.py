@@ -44,5 +44,7 @@ urlpatterns = [
     path("listar/categorias/", CategoriaListView.as_view(), name="listar-categorias"),
     path("listar/bots/", BotListView.as_view(), name="listar-bots"),
 
+    #path("listar/meus-bots",)
+
 ]
 

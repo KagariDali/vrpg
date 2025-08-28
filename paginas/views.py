@@ -10,6 +10,7 @@ from django.views.generic.edit import CreateView
 # Adicione no início do arquivo depois das outras importações
 from django.contrib.auth.models import User, Group
 from .forms import UsuarioCadastroForm
+from django.shortcuts import get_object_or_404
 
 
 
@@ -49,6 +50,12 @@ class SobreView(TemplateView):
     template_name = 'paginas/sobre.html'
 
 
+class UsuarioCreate(CreateView):
+    model = User
+    form_class = UsuarioCadastroForm
+    template_name = 'cadastros/form.html'
+    success_url = reverse_lazy('index')
+    extra_context = {'titulo': 'Cadastrar Usuário', 'botao': 'Cadastrar'}
 
 class CategoriaCreate(LoginRequiredMixin, CreateView):
     template_name = "paginas/form.html" # arquivo html com o <form>.
@@ -102,6 +109,18 @@ class AvaliacaoCreate(LoginRequiredMixin, CreateView):
 
 #######################################################################
 
+class UsuarioUpdate(LoginRequiredMixin, UpdateView):
+    model = User
+    fields = ['first_name', 'last_name', 'email']  # você pode colocar mais campos se quiser
+    template_name = 'paginas/form.html'
+    success_url = reverse_lazy('index')
+    extra_context = {'titulo': 'Atualizar Usuário', 'botao': 'Salvar alterações'}
+
+    def get_object(self, queryset=None):
+        # garante que o usuário só pode editar o próprio perfil
+        return self.request.user
+
+
 class CategoriaUpdate(LoginRequiredMixin, UpdateView):
     template_name = "paginas/form.html" # arquivo html com o <form>.
     model = Categoria # classe criada no models.
@@ -116,6 +135,9 @@ class BotUpdate(LoginRequiredMixin, UpdateView):
     fields = [ 'nome', 'descricao', 'categoria', 'link' ] # lista com os nomes dos atributos.
     success_url = reverse_lazy('index') # name da url para redirecionar.
     extra_context = {'titulo': 'Criar Bot', 'botao' : 'Atualizar'}
+
+    def get_object(self, queryset =None):
+        obj = get_object_or_404(Bot, pk=self.kwargs['pk'], usuario=self.request.user)
 
 
 class ComentarioUpdate(LoginRequiredMixin, UpdateView):
@@ -135,6 +157,16 @@ class AvaliacaoUpdate(LoginRequiredMixin, UpdateView):
 
 
 ##############################################################################
+
+class UsuarioDelete(LoginRequiredMixin, DeleteView):
+    model = User
+    template_name = 'paginas/formExcluir.html'
+    success_url = reverse_lazy('index')
+    extra_context = {'titulo': 'Excluir Usuário'}
+
+    def get_object(self, queryset=None):
+        # garante que o usuário só pode excluir o próprio perfil
+        return self.request.user
 
 class CategoriaDelete(LoginRequiredMixin, DeleteView):
     model = Categoria
