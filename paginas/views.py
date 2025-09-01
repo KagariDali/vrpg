@@ -17,9 +17,9 @@ from django.shortcuts import get_object_or_404
 class CadastroUsuarioView(CreateView):
     model = User
     form_class = UsuarioCadastroForm
-    template_name = 'cadastros/form.html'
+    template_name = 'paginas/form.html'
     success_url = reverse_lazy('login')
-    extra_context = {'titulo': 'Registro de usuários'}
+    extra_context = {'titulo': 'Registro de usuários', 'botao': 'Registrar-se'}
 
 
     def form_valid(self, form):
@@ -179,6 +179,9 @@ class BotDelete(LoginRequiredMixin, DeleteView):
     template_name = 'paginas/formExcluir.html'
     success_url = reverse_lazy('index')
 
+    def get_object(self, queryset =None):
+        obj = get_object_or_404(Bot, pk=self.kwargs['pk'], usuario=self.request.user)
+
 
 class ComentarioDelete(LoginRequiredMixin, DeleteView):
     model = Comentario
@@ -198,6 +201,14 @@ class AvaliacaoDelete(LoginRequiredMixin, DeleteView):
 class BotListView(LoginRequiredMixin, ListView):
     model = Bot
     template_name = 'paginas/listas/bots.html'
+
+    def get_queryset(self):
+        
+        if(self.request.user.is_superuser):
+            return Bot.objects.all()
+        else:
+            return Bot.objects.filter(usuario=self.request.user)
+
 
 class AvaliacaoListView(LoginRequiredMixin, ListView):
     model = Avaliacao

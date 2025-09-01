@@ -3,25 +3,34 @@
 {% load static %}
 
 <!-- IMPORTAR O CRISPY-->
- {% load crispy_form_tags %}
+{% load crispy_forms_tags %}
+
 {% block conteudo %}
 <div class="container my-2">
 
-    <h2>{{ titulo }}</h2>
+    <div class="row justify-content-center">
 
-    <form method="POST">
-            {% csrf_token %}
-        
-            {{ form|crispy }}
-        
-            <button type="submit" class="btn btn-success">
-                {{ botao }}
-            </button>
+        <div class="col-lg-5">
 
-            <div style="text-align: center; margin-top: 20px;">
-                <a href="{% url 'index' %}">← Cancelar e voltar</a>
-            </div>
-    </form>
-
+            
+            <h2>{{ titulo }}</h2>
+            
+            <form method="POST">
+                {% csrf_token %}
+                
+                {{ form|crispy }}
+                
+                <button type="submit" class="btn btn-success">
+                    {{ botao }}
+                </button>
+                
+                <div style="text-align: center; margin-top: 20px;">
+                    <a href="{% url 'index' %}">← Cancelar e voltar</a>
+                </div>
+            </form>
+            
+        </div>
+    
+    </div>
 </div>  
 {% endblock %}

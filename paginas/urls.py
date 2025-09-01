@@ -10,6 +10,7 @@ from .views import CadastroUsuarioView
 urlpatterns = [
 
     path("registrar/", CadastroUsuarioView.as_view(), name="registrar"),
+
     path("", Inicio.as_view(), name="index"),
     path("sobre/", SobreView.as_view(), name="sobre"),
 
@@ -17,11 +18,12 @@ urlpatterns = [
     path("login/", auth_views.LoginView.as_view(template_name = 'paginas/form.html',
         extra_context = {'titulo': 'Autenticação', 
                          'botao' : 'Entrar'}), name="login"),
+
     path("senha/", auth_views.PasswordChangeView.as_view(template_name = 'paginas/form.html',
         extra_context = {'titulo': 'Atualizar senha', 
                          'botao' : 'Entrar'}), name="senha"),
 
-    path("logout/", auth_views.LogoutView.as_view(), name="logout"),
+    path("logout/", auth_views.LogoutView.as_view(next_page="index"), name="logout"),
 
 
     path('cadastrar/bot/', BotCreate.as_view(), name="cadastrar-bot"),
@@ -44,7 +46,7 @@ urlpatterns = [
     path("listar/categorias/", CategoriaListView.as_view(), name="listar-categorias"),
     path("listar/bots/", BotListView.as_view(), name="listar-bots"),
 
-    #path("listar/meus-bots",)
+    # path("listar/meus-bots",)
 
 ]
 
