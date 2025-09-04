@@ -3,9 +3,13 @@ from django.urls import path
 from .views import (Inicio, SobreView,  BotCreate, CategoriaCreate, AvaliacaoCreate, ComentarioCreate, 
 BotUpdate, CategoriaUpdate, AvaliacaoUpdate, ComentarioUpdate,
 BotDelete, CategoriaDelete, AvaliacaoDelete, ComentarioDelete)
-from .views import BotListView, AvaliacaoListView, ComentarioListView, CategoriaListView
+from .views import BotListView, AvaliacaoListView, ComentarioListView, CategoriaListView, MeusBots
 from django.contrib.auth import views as auth_views
 from .views import CadastroUsuarioView
+from django.urls import path
+from .views import UsuarioUpdate
+from django.contrib.auth.views import PasswordChangeView
+from django.urls import reverse_lazy
 
 urlpatterns = [
 
@@ -23,7 +27,18 @@ urlpatterns = [
         extra_context = {'titulo': 'Atualizar senha', 
                          'botao' : 'Entrar'}), name="senha"),
 
+        path(
+        "alterar-senha/",
+        PasswordChangeView.as_view(
+            template_name="paginas/formUpdate.html",
+            success_url=reverse_lazy("index"),
+            extra_context={"titulo": "Alterar Senha", "botao": "Salvar nova senha"},
+        ),
+        name="alterar-senha",
+    ),
+
     path("logout/", auth_views.LogoutView.as_view(next_page="index"), name="logout"),
+    path("editar-usuario/", UsuarioUpdate.as_view(), name="editar-usuario"),
 
 
     path('cadastrar/bot/', BotCreate.as_view(), name="cadastrar-bot"),
@@ -45,6 +60,7 @@ urlpatterns = [
     path("listar/comentarios/", ComentarioListView.as_view(), name="listar-comentarios"),
     path("listar/categorias/", CategoriaListView.as_view(), name="listar-categorias"),
     path("listar/bots/", BotListView.as_view(), name="listar-bots"),
+    path("listar/meus-bots/", MeusBots.as_view(), name="listar-meus-bots"),
 
     # path("listar/meus-bots",)
 

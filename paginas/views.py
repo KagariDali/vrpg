@@ -112,7 +112,7 @@ class AvaliacaoCreate(LoginRequiredMixin, CreateView):
 class UsuarioUpdate(LoginRequiredMixin, UpdateView):
     model = User
     fields = ['first_name', 'last_name', 'email']  # você pode colocar mais campos se quiser
-    template_name = 'paginas/form.html'
+    template_name = 'paginas/formUpdate.html'
     success_url = reverse_lazy('index')
     extra_context = {'titulo': 'Atualizar Usuário', 'botao': 'Salvar alterações'}
 
@@ -146,6 +146,8 @@ class ComentarioUpdate(LoginRequiredMixin, UpdateView):
     fields = [ 'comentario' , 'bot'] # lista com os nomes dos atributos.
     success_url = reverse_lazy('index') # name da url para redirecionar.
     extra_context = {'titulo': 'Comente sobre o Bot', 'botao' : 'Atualizar'}
+    def get_object(self, queryset =None):
+        obj = get_object_or_404(Comentario, pk=self.kwargs['pk'], usuario=self.request.user)
 
 
 class AvaliacaoUpdate(LoginRequiredMixin, UpdateView):
@@ -154,6 +156,8 @@ class AvaliacaoUpdate(LoginRequiredMixin, UpdateView):
     fields = [ 'nota', 'bot' ] # lista com os nomes dos atributos.
     success_url = reverse_lazy('index') # name da url para redirecionar.
     extra_context = {'titulo': 'De uma nota ao Bot', 'botao' : 'Atualizar'}
+    def get_object(self, queryset =None):
+        obj = get_object_or_404(Avaliacao, pk=self.kwargs['pk'], usuario=self.request.user)
 
 
 ##############################################################################
@@ -187,12 +191,16 @@ class ComentarioDelete(LoginRequiredMixin, DeleteView):
     model = Comentario
     template_name = 'paginas/formExcluir.html'
     success_url = reverse_lazy('index')
+    def get_object(self, queryset =None):
+        obj = get_object_or_404(Comentario, pk=self.kwargs['pk'], usuario=self.request.user)
 
 
 class AvaliacaoDelete(LoginRequiredMixin, DeleteView):
     model = Avaliacao
     template_name = 'paginas/formExcluir.html'
     success_url = reverse_lazy('index')
+    def get_object(self, queryset =None):
+        obj = get_object_or_404(Avaliacao, pk=self.kwargs['pk'], usuario=self.request.user)
 
 
 ##############################################################################
@@ -200,13 +208,10 @@ class AvaliacaoDelete(LoginRequiredMixin, DeleteView):
 
 class BotListView(LoginRequiredMixin, ListView):
     model = Bot
-    template_name = 'paginas/listas/bots.html'
+    template_name = 'paginas/listas/bots.html'  
 
+class MeusBots(BotListView):
     def get_queryset(self):
-        
-        if(self.request.user.is_superuser):
-            return Bot.objects.all()
-        else:
             return Bot.objects.filter(usuario=self.request.user)
 
 
