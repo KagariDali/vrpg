@@ -1,0 +1,74 @@
+   /* Ajustes rápidos pro tema escuro elegante */
+   :root {
+    --bs-body-bg: #0b0e14;        /* fundo global mais escuro */
+    --bs-body-color: #e6e6e6;
+    --bs-card-bg: #121622;        /* fundo dos cards */
+    --bs-card-border-color: rgba(255,255,255,.06);
+    --bs-nav-link-color: #c9d4e5;
+  }
+  .navbar {
+    background: linear-gradient(180deg, #0f1421 0%, rgba(15,20,33,0.85) 100%);
+    border-bottom: 1px solid rgba(255,255,255,.06);
+    backdrop-filter: blur(8px);
+  }
+  .footer {
+    background: #0f1421;
+    border-top: 1px solid rgba(255,255,255,.06);
+  }
+  .btn-custom-primary {
+    --bs-btn-color: #fff;
+    --bs-btn-bg: #6c5ce7;
+    --bs-btn-border-color: #6c5ce7;
+    --bs-btn-hover-bg: #5949d8;
+    --bs-btn-hover-border-color: #5949d8;
+    --bs-btn-focus-shadow-rgb: 108,92,231;
+  }
+  .btn-custom-outline {
+    --bs-btn-color: #c9d4e5;
+    --bs-btn-border-color: #3b475f;
+    --bs-btn-hover-color: #fff;
+    --bs-btn-hover-bg: #3b475f;
+    --bs-btn-hover-border-color: #3b475f;
+  }
+
+  /* Cards */
+  .bot-card {
+    border: 1px solid var(--bs-card-border-color);
+    transition: transform .2s ease, box-shadow .2s ease, border-color .2s;
+    box-shadow: 0 6px 24px rgba(0,0,0,.35);
+    height: 100%;
+    background: var(--bs-card-bg);
+  }
+  .bot-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 32px rgba(0,0,0,.5);
+    border-color: rgba(108,92,231,.45);
+  }
+  .bot-thumb {
+    height: 180px;
+    object-fit: cover;
+    border-bottom: 1px solid rgba(255,255,255,.06);
+  }
+  .category-badge {
+    background: rgba(108,92,231,.18);
+    color: #c7c0ff;
+    border: 1px solid rgba(108,92,231,.35);
+  }
+
+  /* Centralização da listagem com rolagem garantida */
+  .catalog-wrapper {
+    min-height: 100vh;                 /* garante altura da viewport */
+    display: flex;
+    align-items: center;                /* centraliza verticalmente */
+    justify-content: center;            /* centraliza horizontalmente */
+    padding-block: 3rem;                /* espaço p/ permitir rolagem em qualquer canto */
+  }
+  .catalog-container {
+    width: 100%;
+    max-width: 1200px;                  /* conforto de leitura */
+  }
+
+  /* Ajuste do alerta de mensagens */
+  .messages-container {
+    position: sticky; top: 0; z-index: 1040;
+  }
