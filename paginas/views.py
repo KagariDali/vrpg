@@ -11,6 +11,7 @@ from django.views.generic.edit import CreateView
 from django.contrib.auth.models import User, Group
 from .forms import UsuarioCadastroForm
 from django.shortcuts import get_object_or_404
+from .forms import PerfilForm
 
 
 
@@ -119,6 +120,18 @@ class UsuarioUpdate(LoginRequiredMixin, UpdateView):
     def get_object(self, queryset=None):
         # garante que o usuário só pode editar o próprio perfil
         return self.request.user
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['perfil_form'] = PerfilForm(instance=self.request.user.perfil)
+        return context
+
+    def post(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        perfil_form = PerfilForm(request.POST, request.FILES, instance=self.request.user.perfil)
+        if perfil_form.is_valid():
+            perfil_form.save()
+        return super().post(request, *args, **kwargs)
 
 
 class CategoriaUpdate(LoginRequiredMixin, UpdateView):

@@ -1,6 +1,13 @@
 from django.db import models
 from django.contrib.auth.models import User
 
+class Perfil(models.Model):
+    usuario = models.OneToOneField(User, on_delete=models.CASCADE, related_name='perfil')
+    imagem = models.ImageField(upload_to='usuarios_imagens/', blank=True, null=True)
+
+    def __str__(self):
+        return self.usuario.username
+
 # Suas classes
 
 class Categoria(models.Model):
@@ -17,6 +24,8 @@ class Bot(models.Model):
     link = models.URLField(max_length=255)
     cadastro_em = models.DateTimeField(auto_now_add = True)
     usuario = models.ForeignKey(User, on_delete=models.PROTECT)
+    imagem = models.ImageField(upload_to='bots_imagens/', blank=True, null=True)
+    
     def __str__(self):
         return self.nome
 

@@ -1,6 +1,8 @@
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 from django import forms
+from .models import Bot
+from .models import Perfil
 
 
 # Crie uma classe de formulário para o cadastro de usuários
@@ -27,3 +29,15 @@ class UsuarioCadastroForm(UserCreationForm):
         if User.objects.filter(email=email).exists():
             raise forms.ValidationError("Este email já está em uso.")
         return email
+
+
+class BotForm(forms.ModelForm):
+    class Meta:
+        model = Bot
+        fields = ['nome', 'descricao', 'categoria', 'link', 'imagem']
+
+
+class PerfilForm(forms.ModelForm):
+    class Meta:
+        model = Perfil
+        fields = ['imagem']
