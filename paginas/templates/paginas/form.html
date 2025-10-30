@@ -6,31 +6,27 @@
 {% load crispy_forms_tags %}
 
 {% block conteudo %}
-<div class="container my-2">
+<style>
+  body {
+    background: url("{% static 'img/background-forms.jpg' %}") no-repeat center center fixed;
+    background-size: cover;
+  }
+</style>
 
-    <div class="row justify-content-center">
+<div class="glass-container d-flex justify-content-center align-items-center vh-100">
+  <div class="glass-card p-4 text-center" style="max-width: 400px; width: 100%;">
+    <h3 class="mb-4">{{ titulo }}</h3>
 
-        <div class="col-lg-5">
+    <form method="POST" enctype="multipart/form-data">
+      {% csrf_token %}
+      {{ form|crispy }}
 
-            
-            <h2>{{ titulo }}</h2>
-            
-            <form method="POST" enctype="multipart/form-data">
-                {% csrf_token %}
-                
-                {{ form|crispy }}
-                
-                <button type="submit" class="btn btn-success">
-                    {{ botao }}
-                </button>
-                
-                <div style="text-align: center; margin-top: 20px;">
-                    <a href="{% url 'index' %}">← Cancelar e voltar</a>
-                </div>
-            </form>
-            
-        </div>
-    
+      <button type="submit" class="glass-btn w-100">{{ botao }}</button>
+    </form>
+
+    <div class="mt-3">
+      <a href="{% url 'index' %}" class="text-light small">← Cancelar e voltar</a>
     </div>
-</div>  
+  </div>
+</div>
 {% endblock %}

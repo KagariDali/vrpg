@@ -37,6 +37,7 @@ urlpatterns = [
         name="alterar-senha",
     ),
 
+    
     path("logout/", auth_views.LogoutView.as_view(next_page="index"), name="logout"),
     path("editar-usuario/", UsuarioUpdate.as_view(), name="editar-usuario"),
 
