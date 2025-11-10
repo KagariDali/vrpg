@@ -3,6 +3,11 @@
 {% block conteudo %}
 <div class="container my-2">
   <h3 class="my-5">Categorias cadastradas</h3>
+  <form method="get" class="d-flex mb-3">
+    <input type="text" name="nome" class="form-control me-2" placeholder="Pesquisar por nome..." value="{{ request.GET.nome }}">
+    <button type="submit" class="btn btn-primary me-2">Buscar</button>
+    <a href="{% url 'listar-categorias' %}" class="btn btn-secondary">Limpar</a>
+  </form>
   <table class="table table-striped">
     <tr>
       <th>Nome</th>

@@ -12,6 +12,26 @@ from django.contrib.auth.models import User, Group
 from .forms import UsuarioCadastroForm
 from django.shortcuts import get_object_or_404
 from .forms import PerfilForm
+from django.db.models import Q
+
+
+# Mixin genérico para adicionar pesquisa via GET (parâmetro 'nome')
+class SearchMixin:
+    """Adiciona busca por uma string (GET param 'nome') sobre os campos
+    listados em `search_fields` (lista de lookups Django, ex: 'nome',
+    'bot__nome'). Se `search_fields` estiver vazio, não faz nada.
+    """
+    search_fields = []
+
+    def get_queryset(self):
+        qs = super().get_queryset()
+        q = self.request.GET.get('nome', '').strip()
+        if q and self.search_fields:
+            query = Q()
+            for f in self.search_fields:
+                query |= Q(**{f + '__icontains': q})
+            qs = qs.filter(query).distinct()
+        return qs
 
 
 
@@ -219,23 +239,31 @@ class AvaliacaoDelete(LoginRequiredMixin, DeleteView):
 ##############################################################################
 
 
-class BotListView(LoginRequiredMixin, ListView):
+class BotListView(LoginRequiredMixin, SearchMixin, ListView):
     model = Bot
-    template_name = 'paginas/listas/bots.html'  
+    template_name = 'paginas/listas/bots.html'
+    # campos que serão buscados quando o usuário enviar ?nome=...
+    search_fields = ['nome', 'descricao', 'categoria__nome', 'link']
 
-class MeusBots(BotListView):
+class MeusBots(SearchMixin, BotListView):
     def get_queryset(self):
-            return Bot.objects.filter(usuario=self.request.user)
+        # reaproveita o comportamento do mixin (super() -> BotListView.get_queryset
+        # que por sua vez chama ListView.get_queryset) e depois restringe ao usuário
+        qs = super().get_queryset()
+        return qs.filter(usuario=self.request.user)
 
 
-class AvaliacaoListView(LoginRequiredMixin, ListView):
+class AvaliacaoListView(LoginRequiredMixin, SearchMixin, ListView):
     model = Avaliacao
     template_name = 'paginas/listas/avaliacoes.html'
+    search_fields = ['bot__nome', 'usuario__username']
 
-class ComentarioListView(LoginRequiredMixin, ListView):
+class ComentarioListView(LoginRequiredMixin, SearchMixin, ListView):
     model = Comentario
     template_name = 'paginas/listas/comentarios.html'
+    search_fields = ['comentario', 'bot__nome', 'usuario__username']
 
-class CategoriaListView(LoginRequiredMixin, ListView):
+class CategoriaListView(LoginRequiredMixin, SearchMixin, ListView):
     model = Categoria
     template_name = 'paginas/listas/categorias.html'
+    search_fields = ['nome']
