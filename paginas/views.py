@@ -245,7 +245,7 @@ class BotListView(LoginRequiredMixin, SearchMixin, ListView):
     # campos que serão buscados quando o usuário enviar ?nome=...
     search_fields = ['nome', 'descricao', 'categoria__nome', 'link']
 
-class MeusBots(SearchMixin, BotListView):
+class MeusBots(BotListView):
     def get_queryset(self):
         # reaproveita o comportamento do mixin (super() -> BotListView.get_queryset
         # que por sua vez chama ListView.get_queryset) e depois restringe ao usuário

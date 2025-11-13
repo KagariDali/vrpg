@@ -43,6 +43,8 @@ INSTALLED_APPS = [
     # Instalar o crispy forms e o crispy bootstrap 5
     'crispy_forms',
     'crispy_bootstrap5',
+    # Debug toolbar
+    "debug_toolbar",
 ]
 
 # configurar o crispy com bootstrap 5
@@ -57,6 +59,7 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    "debug_toolbar.middleware.DebugToolbarMiddleware",
 ]
 
 ROOT_URLCONF = "pw2025.urls"
@@ -142,3 +145,9 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 LOGIN_REDIRECT_URL = 'index'
 LOGIN_URL = 'login'
 LOGOUT_REDIRECT_URL = 'logout'
+
+INTERNAL_IPS = [
+    # ...
+    "127.0.0.1",
+    # ...
+]
