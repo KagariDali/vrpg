@@ -11,7 +11,10 @@ from django.views.generic.edit import CreateView
 from django.contrib.auth.models import User, Group
 from .forms import UsuarioCadastroForm
 from django.shortcuts import get_object_or_404
-from .forms import PerfilForm
+from .forms import PerfilForm, BotForm
+from .models import Perfil
+from django.contrib import messages
+from django.views.generic import TemplateView
 from django.db.models import Q
 
 
@@ -62,7 +65,16 @@ class Inicio(TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['bots'] = Bot.objects.select_related('categoria').all().order_by('-cadastro_em')
+        qs = Bot.objects.select_related('categoria').all().order_by('-cadastro_em')
+        # busca via GET param 'nome' (compatível com SearchMixin)
+        q = self.request.GET.get('nome', '').strip()
+        if q:
+            query = Q()
+            for f in ['nome', 'descricao', 'categoria__nome', 'link', 'usuario__username']:
+                query |= Q(**{f + '__icontains': q})
+            qs = qs.filter(query).distinct()
+
+        context['bots'] = qs
         context['avaliacoes'] = Avaliacao.objects.all()
         context['comentarios'] = Comentario.objects.all()
         return context
@@ -89,7 +101,7 @@ class CategoriaCreate(LoginRequiredMixin, CreateView):
 class BotCreate(LoginRequiredMixin, CreateView):
     template_name = "paginas/form.html" # arquivo html com o <form>.
     model = Bot # classe criada no models.
-    fields = [ 'nome', 'descricao', 'categoria', 'link' ] # lista com os nomes dos atributos.
+    form_class = BotForm
     success_url = reverse_lazy('index') # name da url para redirecionar.
     extra_context = {'titulo': 'Criar Bot', 'botao' : 'Cadastrar'}
 
@@ -143,14 +155,27 @@ class UsuarioUpdate(LoginRequiredMixin, UpdateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['perfil_form'] = PerfilForm(instance=self.request.user.perfil)
+        # Garante que exista um objeto Perfil para o usuário
+        perfil = getattr(self.request.user, 'perfil', None)
+        if perfil is None:
+            perfil = Perfil.objects.create(usuario=self.request.user)
+        context['perfil_form'] = PerfilForm(instance=perfil)
         return context
 
     def post(self, request, *args, **kwargs):
         self.object = self.get_object()
-        perfil_form = PerfilForm(request.POST, request.FILES, instance=self.request.user.perfil)
+        # Garante que o perfil exista antes de processar o POST
+        perfil = getattr(request.user, 'perfil', None)
+        if perfil is None:
+            perfil = Perfil.objects.create(usuario=request.user)
+
+        perfil_form = PerfilForm(request.POST, request.FILES, instance=perfil)
         if perfil_form.is_valid():
             perfil_form.save()
+            messages.success(request, 'Perfil atualizado com sucesso.')
+        else:
+            messages.error(request, 'Erro ao atualizar o perfil. Verifique os dados.')
+
         return super().post(request, *args, **kwargs)
 
 
@@ -165,12 +190,15 @@ class CategoriaUpdate(LoginRequiredMixin, UpdateView):
 class BotUpdate(LoginRequiredMixin, UpdateView):
     template_name = "paginas/form.html" # arquivo html com o <form>.
     model = Bot # classe criada no models.
-    fields = [ 'nome', 'descricao', 'categoria', 'link' ] # lista com os nomes dos atributos.
+    form_class = BotForm
     success_url = reverse_lazy('index') # name da url para redirecionar.
     extra_context = {'titulo': 'Criar Bot', 'botao' : 'Atualizar'}
 
     def get_object(self, queryset =None):
-        obj = get_object_or_404(Bot, pk=self.kwargs['pk'], usuario=self.request.user)
+        # Superuser pode editar qualquer bot; usuários normais apenas os próprios
+        if self.request.user.is_superuser:
+            return get_object_or_404(Bot, pk=self.kwargs['pk'])
+        return get_object_or_404(Bot, pk=self.kwargs['pk'], usuario=self.request.user)
 
 
 class ComentarioUpdate(LoginRequiredMixin, UpdateView):
@@ -180,7 +208,10 @@ class ComentarioUpdate(LoginRequiredMixin, UpdateView):
     success_url = reverse_lazy('index') # name da url para redirecionar.
     extra_context = {'titulo': 'Comente sobre o Bot', 'botao' : 'Atualizar'}
     def get_object(self, queryset =None):
-        obj = get_object_or_404(Comentario, pk=self.kwargs['pk'], usuario=self.request.user)
+        # Superuser pode editar qualquer comentário; usuários normais apenas os próprios
+        if self.request.user.is_superuser:
+            return get_object_or_404(Comentario, pk=self.kwargs['pk'])
+        return get_object_or_404(Comentario, pk=self.kwargs['pk'], usuario=self.request.user)
 
 
 class AvaliacaoUpdate(LoginRequiredMixin, UpdateView):
@@ -190,7 +221,10 @@ class AvaliacaoUpdate(LoginRequiredMixin, UpdateView):
     success_url = reverse_lazy('index') # name da url para redirecionar.
     extra_context = {'titulo': 'De uma nota ao Bot', 'botao' : 'Atualizar'}
     def get_object(self, queryset =None):
-        obj = get_object_or_404(Avaliacao, pk=self.kwargs['pk'], usuario=self.request.user)
+        # Superuser pode editar qualquer avaliação; usuários normais apenas as próprias
+        if self.request.user.is_superuser:
+            return get_object_or_404(Avaliacao, pk=self.kwargs['pk'])
+        return get_object_or_404(Avaliacao, pk=self.kwargs['pk'], usuario=self.request.user)
 
 
 ##############################################################################
@@ -217,7 +251,10 @@ class BotDelete(LoginRequiredMixin, DeleteView):
     success_url = reverse_lazy('index')
 
     def get_object(self, queryset =None):
-        obj = get_object_or_404(Bot, pk=self.kwargs['pk'], usuario=self.request.user)
+        # Superuser pode deletar qualquer bot; usuários normais apenas os próprios
+        if self.request.user.is_superuser:
+            return get_object_or_404(Bot, pk=self.kwargs['pk'])
+        return get_object_or_404(Bot, pk=self.kwargs['pk'], usuario=self.request.user)
 
 
 class ComentarioDelete(LoginRequiredMixin, DeleteView):
@@ -225,7 +262,10 @@ class ComentarioDelete(LoginRequiredMixin, DeleteView):
     template_name = 'paginas/formExcluir.html'
     success_url = reverse_lazy('index')
     def get_object(self, queryset =None):
-        obj = get_object_or_404(Comentario, pk=self.kwargs['pk'], usuario=self.request.user)
+        # Superuser pode deletar qualquer comentário; usuários normais apenas os próprios
+        if self.request.user.is_superuser:
+            return get_object_or_404(Comentario, pk=self.kwargs['pk'])
+        return get_object_or_404(Comentario, pk=self.kwargs['pk'], usuario=self.request.user)
 
 
 class AvaliacaoDelete(LoginRequiredMixin, DeleteView):
@@ -233,7 +273,10 @@ class AvaliacaoDelete(LoginRequiredMixin, DeleteView):
     template_name = 'paginas/formExcluir.html'
     success_url = reverse_lazy('index')
     def get_object(self, queryset =None):
-        obj = get_object_or_404(Avaliacao, pk=self.kwargs['pk'], usuario=self.request.user)
+        # Superuser pode deletar qualquer avaliação; usuários normais apenas as próprias
+        if self.request.user.is_superuser:
+            return get_object_or_404(Avaliacao, pk=self.kwargs['pk'])
+        return get_object_or_404(Avaliacao, pk=self.kwargs['pk'], usuario=self.request.user)
 
 
 ##############################################################################
@@ -244,6 +287,21 @@ class BotListView(LoginRequiredMixin, SearchMixin, ListView):
     template_name = 'paginas/listas/bots.html'
     # campos que serão buscados quando o usuário enviar ?nome=...
     search_fields = ['nome', 'descricao', 'categoria__nome', 'link']
+
+
+class UsuarioDetail(LoginRequiredMixin, TemplateView):
+    template_name = 'paginas/perfil.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        user = self.request.user
+        # garante que o perfil exista
+        perfil = getattr(user, 'perfil', None)
+        if perfil is None:
+            Perfil.objects.create(usuario=user)
+        context['usuario'] = user
+        context['bots'] = Bot.objects.filter(usuario=user).order_by('-cadastro_em')
+        return context
 
 class MeusBots(BotListView):
     def get_queryset(self):

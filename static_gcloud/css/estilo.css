@@ -11,6 +11,16 @@
     border-bottom: 1px solid rgba(255,255,255,.06);
     backdrop-filter: blur(8px);
   }
+
+  /* Garante que a navbar e dropdowns fiquem acima dos cards */
+  /* Garante que a navbar e dropdowns fiquem acima dos cards */
+  .navbar {
+    position: relative;
+    z-index: 9999; /* valor alto para evitar conflito com stacking contexts */
+  }
+  .dropdown-menu {
+    z-index: 10000 !important;
+  }
   .footer {
     background: #0f1421;
     border-top: 1px solid rgba(255,255,255,.06);
@@ -38,11 +48,14 @@
     box-shadow: 0 6px 24px rgba(0,0,0,.35);
     height: 100%;
     background: var(--bs-card-bg);
+    position: relative; /* garante que o card esteja em seu próprio contexto com z-index controlado */
+    z-index: 0; /* base baixa para não sobrescrever dropdowns */
   }
   .bot-card:hover {
     transform: translateY(-4px);
     box-shadow: 0 12px 32px rgba(0,0,0,.5);
     border-color: rgba(108,92,231,.45);
+    z-index: 10; /* mantém acima de cartões normais ao interagir, mas abaixo do dropdown (10000) */
   }
   .bot-thumb {
     height: 180px;

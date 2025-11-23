@@ -9,3 +9,4 @@ django-localflavor==4.0
 crispy-bootstrap5==2025.4
 psycopg2==2.9.10
 gunicorn
+Pillow

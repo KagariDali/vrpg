@@ -3,6 +3,8 @@ from django.contrib.auth.models import User
 from django import forms
 from .models import Bot
 from .models import Perfil
+from django.forms import widgets
+from django.forms.widgets import ClearableFileInput
 
 
 # Crie uma classe de formulário para o cadastro de usuários
@@ -35,6 +37,14 @@ class BotForm(forms.ModelForm):
     class Meta:
         model = Bot
         fields = ['nome', 'descricao', 'categoria', 'link', 'imagem']
+        widgets = {
+            'descricao': forms.Textarea(attrs={'rows':3}),
+            'link': forms.URLInput(attrs={'placeholder':'https://example.com'}),
+            'imagem': ClearableFileInput(attrs={'class':'form-control form-control-sm'}),
+        }
+        labels = {
+            'imagem': 'Imagem do Bot (opcional)'
+        }
 
 
 class PerfilForm(forms.ModelForm):

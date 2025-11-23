@@ -12,6 +12,11 @@
                 {% csrf_token %}
                 {{ form|crispy }}
 
+                {# Formulário de perfil (imagem) enviado junto ao form do usuário #}
+                {% if perfil_form %}
+                    {{ perfil_form|crispy }}
+                {% endif %}
+
                 <div class="d-grid gap-2">
                     <button type="submit" class="btn btn-primary">
                         {{ botao }}

@@ -8,6 +8,7 @@ from django.contrib.auth import views as auth_views
 from .views import CadastroUsuarioView
 from django.urls import path
 from .views import UsuarioUpdate
+from .views import UsuarioDetail
 from django.contrib.auth.views import PasswordChangeView
 from django.urls import reverse_lazy
 
@@ -40,6 +41,7 @@ urlpatterns = [
     
     path("logout/", auth_views.LogoutView.as_view(next_page="index"), name="logout"),
     path("editar-usuario/", UsuarioUpdate.as_view(), name="editar-usuario"),
+    path("perfil/", UsuarioDetail.as_view(), name="perfil"),
 
 
     path('cadastrar/bot/', BotCreate.as_view(), name="cadastrar-bot"),
